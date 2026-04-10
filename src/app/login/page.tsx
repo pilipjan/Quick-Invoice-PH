@@ -239,7 +239,8 @@ export default function LoginPage() {
              <p className="text-[10px] text-surface-500">
                By using this tool, you agree to our <Link href="/terms" className="text-surface-400 underline hover:text-primary-400">Terms</Link> and <Link href="/compliance" className="text-surface-400 underline hover:text-primary-400">BIR Disclosure</Link>.
              </p>
-          </div>
+            </div>
+          </CardFooter>
         </Card>
       </div>
     </div>
