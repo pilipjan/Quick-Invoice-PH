@@ -12,8 +12,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { createClient } from '@/lib/supabase/client';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { Trash2, Plus, RefreshCw, ChevronDown, ChevronUp, Save, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, ChevronDown, ChevronUp, Save, CheckCircle2, AlertTriangle, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import { 
   Dialog, 
   DialogContent, 
