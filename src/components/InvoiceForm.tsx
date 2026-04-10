@@ -183,6 +183,7 @@ export default function InvoiceForm() {
       <CollapsibleSection 
         title="Business Details" 
         subtitle="Your registered business footprint"
+        defaultOpen={true}
       >
         <div className="flex justify-end mb-6">
            {user ? (
