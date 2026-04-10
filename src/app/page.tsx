@@ -8,28 +8,6 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh] bg-surface-950 font-sans">
-      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass py-3">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <Link className="flex items-center gap-2 group" href="/">
-            <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center shadow-lg group-hover:shadow-[var(--shadow-glow)] transition-shadow">
-              <FileText className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-white tracking-tight">
-              QuickInvoice <span className="text-primary-400">PH</span>
-            </span>
-          </Link>
-          <nav className="ml-auto flex items-center gap-4 sm:gap-6">
-            <Link className="text-sm font-medium text-surface-300 hover:text-white transition-colors" href="#features">
-              Features
-            </Link>
-            <div className="hidden md:flex items-center gap-3 ml-4 border-l border-surface-700 pl-4">
-              <Link href="/builder" className="text-sm font-semibold text-white gradient-primary px-5 py-2.5 rounded-full hover:opacity-90 transition-opacity shadow-lg hover:shadow-[var(--shadow-glow)]">
-                Create Invoice
-              </Link>
-            </div>
-          </nav>
-        </div>
-      </header>
 
       <main className="flex-1">
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-hero">
