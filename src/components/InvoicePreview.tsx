@@ -430,13 +430,16 @@ export default function InvoicePreview() {
 
       const imgData = canvas.toDataURL('image/png');
       
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'px',
-        format: [canvas.width, canvas.height] 
-      });
+      // Standard A4 dimensions in mm
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
       
-      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      // Calculate scaling to fit A4 exactly
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
       const fileName = store.invoiceNumber ? `Invoice-${store.invoiceNumber}.pdf` : 'Sales-Invoice.pdf';
       pdf.save(fileName);
     } catch (error) {
@@ -450,6 +453,25 @@ export default function InvoicePreview() {
 
   return (
     <div className="space-y-4 sticky top-6">
+      {/* Global Print Styles */}
+      <style jsx global>{`
+        @media print {
+          body * { visibility: hidden; }
+          #invoice-capture-area, #invoice-capture-area * { visibility: visible; }
+          #invoice-capture-area { 
+            position: absolute; 
+            left: 0; 
+            top: 0; 
+            width: 210mm;
+            height: 297mm;
+            padding: 0;
+            margin: 0;
+            transform: none !important;
+            scale: 1 !important;
+          }
+          @page { size: auto; margin: 0; }
+        }
+      `}</style>
       <div className="flex justify-between items-center">
         <div className="space-y-1">
           <h2 className="text-xl font-bold">Live Preview</h2>
@@ -478,7 +500,7 @@ export default function InvoicePreview() {
       <div className="bg-surface-900 border border-surface-700/50 rounded-2xl flex justify-center overflow-hidden p-4 relative min-h-[600px] shadow-inner items-start">
         {/* We use specific flex rules because the Receipt is small, while A4 is huge */}
         <div className={`origin-top transition-transform flex-shrink-0 mx-auto ${currentTheme === 'receipt' ? 'scale-100 py-8' : 'transform scale-[0.55] sm:scale-[0.65] lg:scale-[0.55] xl:scale-[0.75] 2xl:scale-90 w-[800px] h-[1056px]'}`}>
-          <div ref={invoiceRef} data-invoice-container className="shadow-2xl bg-white border border-slate-100">
+          <div ref={invoiceRef} id="invoice-capture-area" data-invoice-container className="shadow-2xl bg-white border border-slate-100">
              {currentTheme === 'standard' && <StandardTheme store={store} totals={totals} />}
              {currentTheme === 'modern' && <ModernTheme store={store} totals={totals} />}
              {currentTheme === 'receipt' && <ReceiptTheme store={store} totals={totals} />}

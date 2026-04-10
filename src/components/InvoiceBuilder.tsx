@@ -14,9 +14,9 @@ import { useState, useEffect } from 'react';
 import InvoiceForm from './InvoiceForm';
 import InvoicePreview from './InvoicePreview';
 
-export default function InvoiceBuilder() {
+export default function InvoiceBuilder({ initialUser }: { initialUser?: User | null }) {
   const [mounted, setMounted] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(initialUser || null);
   const [showCompliance, setShowCompliance] = useState(false);
   const supabase = createClient();
   const router = useRouter();
@@ -24,6 +24,9 @@ export default function InvoiceBuilder() {
   useEffect(() => {
     setMounted(true);
     const getUser = async () => {
+      // If we already have the user from server, skip network call
+      if (initialUser) return;
+      
       const { data: { user } } = await supabase.auth.getUser();
       if (user) setUser(user);
     };

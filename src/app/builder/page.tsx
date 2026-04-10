@@ -1,13 +1,14 @@
 import InvoiceBuilder from "@/components/InvoiceBuilder";
-import Link from "next/link";
-import { FileText, ArrowLeft } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function BuilderPage() {
+export default async function BuilderPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen bg-surface-950 flex flex-col font-sans">
-      
       <main className="flex-1">
-        <InvoiceBuilder />
+        <InvoiceBuilder initialUser={user} />
       </main>
     </div>
   );
