@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     icon: "/icon.png",
     apple: "/icon.png",
   },
+  verification: {
+    google: "UaOSg89_kEa1zlI5_Svx4gbYyM15Z1-tDOidWy5RjKk",
+  },
 };
 
 import { Toaster } from "@/components/ui/sonner";
