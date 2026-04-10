@@ -47,6 +47,8 @@ export const metadata: Metadata = {
 
 import { Toaster } from "@/components/ui/sonner";
 
+import Header from "@/components/Header";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -58,6 +60,7 @@ export default function RootLayout({
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <Header />
         {children}
         <Toaster position="top-right" richColors />
         <script

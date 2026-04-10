@@ -80,13 +80,6 @@ export default function LoginPage() {
       <div className="absolute top-1/4 -left-20 w-80 h-80 bg-primary-600/10 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
 
-      <Link 
-        href="/" 
-        className="absolute top-8 left-8 flex items-center gap-2 text-surface-400 hover:text-white transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to Home
-      </Link>
 
       <div className="w-full max-w-md relative z-10">
         <div className="flex items-center gap-2 justify-center mb-8">

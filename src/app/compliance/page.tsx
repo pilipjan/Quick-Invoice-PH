@@ -9,15 +9,6 @@ import { Button } from "@/components/ui/button";
 export default function CompliancePage() {
   return (
     <div className="min-h-screen bg-surface-950 text-white font-sans selection:bg-primary-500/30">
-      <header className="px-4 lg:px-8 h-16 flex items-center glass border-b border-surface-800 sticky top-0 z-10">
-        <Link href="/" className="flex items-center text-surface-400 hover:text-white transition-colors mr-6">
-          <ArrowLeft className="h-5 w-5 mr-1" />
-          Back
-        </Link>
-        <div className="flex items-center font-bold text-lg tracking-tight text-white border-l border-surface-700 pl-6 h-8">
-          EOPT Act & BIR Compliance
-        </div>
-      </header>
 
       <main className="max-w-4xl mx-auto py-12 px-6 lg:py-20">
         <div className="space-y-8">
