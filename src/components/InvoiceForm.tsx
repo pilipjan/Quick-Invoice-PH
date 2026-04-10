@@ -55,6 +55,7 @@ export default function InvoiceForm() {
   const store = useInvoiceStore();
   const supabase = createClient();
 
+  const [user, setUser] = useState<any>(null);
   const [showLegalModal, setShowLegalModal] = useState(false);
   const [hasAtpCheck, setHasAtpCheck] = useState(false);
   const [hasLiabilityCheck, setHasLiabilityCheck] = useState(false);
@@ -78,13 +79,14 @@ export default function InvoiceForm() {
   // 1. Fetch profile on mount/login
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      setUser(currentUser);
+      if (!currentUser) return;
 
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', user.id)
+        .eq('id', currentUser.id)
         .single();
 
       if (error) {
@@ -195,20 +197,38 @@ export default function InvoiceForm() {
           <Switch checked={store.isVatRegistered} onCheckedChange={(val) => store.updateField('isVatRegistered', val)} />
         </div>
 
-        <div className="flex items-center justify-between py-4 px-4 bg-primary-600/10 border border-primary-500/20 rounded-xl my-4 group">
+        <div className={cn(
+          "flex items-center justify-between py-4 px-4 border rounded-xl my-4 group transition-all",
+          user ? "bg-primary-600/10 border-primary-500/20" : "bg-surface-900 border-surface-800 opacity-80"
+        )}>
           <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <Label className="text-base font-bold text-primary-400 font-sans">Official Receipt Mode</Label>
-              <CheckCircle2 className="w-4 h-4 text-primary-400" />
+              <Label className={cn("text-base font-bold font-sans", user ? "text-primary-400" : "text-surface-400")}>
+                Official Receipt Mode
+              </Label>
+              {user && <CheckCircle2 className="w-4 h-4 text-primary-400" />}
+              {!user && <ShieldCheck className="w-4 h-4 text-surface-500" />}
             </div>
-            <p className="text-xs text-surface-400 max-w-xs">
-              Enable this only if you are **BIR-registered** with a valid ATP/CAS. This removes the "Pro-forma" watermark.
+            <p className="text-xs text-surface-400 max-w-xs leading-relaxed">
+              {user 
+                ? "BIR-registered mode (RR 7-2024). Removes 'Pro-forma' watermark." 
+                : "Account required to remove watermarks for compliance monitoring."}
             </p>
+            {!user && (
+              <Link href="/login" className="text-[10px] font-bold text-primary-400 hover:text-primary-300 flex items-center gap-1 mt-1 transition-colors">
+                <ArrowRight className="w-3 h-3" />
+                Sign in to enable Official Mode
+              </Link>
+            )}
           </div>
           <Switch 
             checked={store.isRegisteredBir} 
             onCheckedChange={handleToggleOfficial}
-            className="data-[state=checked]:bg-primary-500"
+            disabled={!user}
+            className={cn(
+              "data-[state=checked]:bg-primary-500",
+              !user && "opacity-50 cursor-not-allowed"
+            )}
           />
         </div>
 
