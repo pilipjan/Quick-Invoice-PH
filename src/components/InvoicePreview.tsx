@@ -7,7 +7,7 @@ import { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Loader2, Save, Cloud } from 'lucide-react';
 import { toast } from 'sonner';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 
 // --- COMPLIANCE WATERMARK ---
@@ -25,7 +25,7 @@ const StandardTheme = ({ store, totals }: { store: any; totals: any }) => (
     {!store.isRegisteredBir && <Watermark />}
     <div className="flex justify-between items-start mb-8 pb-6 border-b-2 border-slate-200">
       <div className="flex flex-col">
-        {store.logoUrl && <img src={store.logoUrl} alt="Logo" className="h-16 w-auto object-contain mb-4" />}
+        {store.logoUrl && <img src={store.logoUrl} crossOrigin="anonymous" alt="Logo" className="h-16 w-auto object-contain mb-4" />}
         <h1 className="text-4xl font-bold text-slate-800 tracking-tight">SALES INVOICE</h1>
         <p className="text-sm mt-2 text-slate-500 max-w-sm">This document serves as the primary evidence of the sale.</p>
       </div>
@@ -100,7 +100,7 @@ const StandardTheme = ({ store, totals }: { store: any; totals: any }) => (
         {/* Signature Area */}
         {store.signatureUrl && (
           <div className="pt-4 w-48 text-center flex flex-col items-center">
-            <img src={store.signatureUrl} alt="Signature" className="h-16 w-auto object-contain mb-1" />
+            <img src={store.signatureUrl} crossOrigin="anonymous" alt="Signature" className="h-16 w-auto object-contain mb-1" />
             <div className="border-t border-slate-400 font-bold text-sm text-slate-700 pt-1 w-full">Authorized Signature</div>
           </div>
         )}
@@ -142,7 +142,7 @@ const ModernTheme = ({ store, totals }: { store: any; totals: any }) => (
     {/* Colored Header Block */}
     <div className="bg-blue-600 text-white p-10 flex justify-between items-center rounded-b-3xl shadow-md">
       <div className="flex flex-col items-start">
-        {store.logoUrl && <img src={store.logoUrl} alt="Logo" className="h-14 w-auto object-contain mb-4 rounded bg-white/10 p-1" />}
+        {store.logoUrl && <img src={store.logoUrl} crossOrigin="anonymous" alt="Logo" className="h-14 w-auto object-contain mb-4 rounded bg-white/10 p-1" />}
         <h1 className="text-5xl font-black tracking-tighter">SALES INVOICE</h1>
         <p className="opacity-80 font-medium mt-1">Invoice No: {store.invoiceNumber || "000000"}</p>
         <p className="opacity-80">Date: {store.invoiceDate || "YYYY-MM-DD"}</p>
@@ -221,7 +221,7 @@ const ModernTheme = ({ store, totals }: { store: any; totals: any }) => (
            
            {store.signatureUrl && (
              <div className="pt-2 w-48 text-center flex flex-col items-center">
-               <img src={store.signatureUrl} alt="Signature" className="h-14 w-auto object-contain mb-1" />
+               <img src={store.signatureUrl} crossOrigin="anonymous" alt="Signature" className="h-14 w-auto object-contain mb-1" />
                <div className="border-t border-slate-300 font-bold text-xs text-slate-500 pt-1 w-full uppercase tracking-widest">Authorized By</div>
              </div>
            )}
@@ -272,7 +272,7 @@ const ReceiptTheme = ({ store, totals }: { store: any; totals: any }) => (
       </div>
     )}
     <div className="text-center mb-4 flex flex-col items-center space-y-1">
-      {store.logoUrl && <img src={store.logoUrl} alt="Logo" className="h-12 w-auto object-contain mb-2 grayscale" />}
+      {store.logoUrl && <img src={store.logoUrl} crossOrigin="anonymous" alt="Logo" className="h-12 w-auto object-contain mb-2 grayscale" />}
       <h2 className="font-bold text-base uppercase">{store.businessName || "STORE NAME"}</h2>
       {store.address && <p>{store.address}</p>}
       <p>VAT Reg TIN: {store.tin || "000-000-000-000"}</p>
@@ -355,6 +355,7 @@ const ReceiptTheme = ({ store, totals }: { store: any; totals: any }) => (
 export default function InvoicePreview() {
   const store = useInvoiceStore();
   const invoiceRef = useRef<HTMLDivElement>(null);
+  const pdfRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -408,42 +409,56 @@ export default function InvoicePreview() {
 
   const handleDownloadPDF = async () => {
     if (!invoiceRef.current) return;
+    
+    // Create a loading toast for feedback
+    const toastId = toast.loading("Generating PDF... Please wait.");
+    
     try {
       setIsExporting(true);
       
-      // We use a clone to capture the element without the parent's scale/transform interference
-      const canvas = await html2canvas(invoiceRef.current, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
+      const el = pdfRef.current ?? invoiceRef.current;
+      const imgData = await toPng(el, {
+        pixelRatio: 3,
         backgroundColor: '#ffffff',
-        logging: false,
-        onclone: (clonedDoc) => {
-          // Ensure the cloned element is perfectly visible for capture
-          const el = clonedDoc.querySelector('[data-invoice-container]');
-          if (el instanceof HTMLElement) {
-            el.style.transform = 'none';
-            el.style.margin = '0';
-          }
+        style: {
+          transform: 'none',
+          margin: '0',
+          position: 'relative'
         }
       });
 
-      const imgData = canvas.toDataURL('image/png');
+      let pdf: jsPDF;
+      let imgWidth: number;
+      let imgHeight: number;
       
-      // Standard A4 dimensions in mm
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
+      const elWidth = el.offsetWidth;
+      const elHeight = el.offsetHeight;
+
+      // Handle custom receipt dimensions vs standard A4
+      if (store.theme === 'receipt') {
+        const pxToMm = 0.264583;
+        const widthMm = elWidth * pxToMm;
+        const heightMm = elHeight * pxToMm;
+        // Thermal receipt width is standard ~80mm, adjusting for padding
+        pdf = new jsPDF('p', 'mm', [widthMm + 6, heightMm + 6]); 
+        imgWidth = widthMm;
+        imgHeight = heightMm;
+        pdf.addImage(imgData, 'PNG', 3, 3, imgWidth, imgHeight); 
+      } else {
+        // Standard A4
+        pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        imgWidth = pageWidth;
+        imgHeight = (elHeight * imgWidth) / elWidth;
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      }
       
-      // Calculate scaling to fit A4 exactly
-      const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
       const fileName = store.invoiceNumber ? `Invoice-${store.invoiceNumber}.pdf` : 'Sales-Invoice.pdf';
       pdf.save(fileName);
-    } catch (error) {
+      toast.success("PDF Downloaded successfully!", { id: toastId });
+    } catch (error: any) {
       console.error('Failed to generate PDF', error);
+      toast.error(`PDF Error: ${error.message || 'Unknown error occurred'}`, { id: toastId });
     } finally {
       setIsExporting(false);
     }
@@ -505,6 +520,25 @@ export default function InvoicePreview() {
              {currentTheme === 'modern' && <ModernTheme store={store} totals={totals} />}
              {currentTheme === 'receipt' && <ReceiptTheme store={store} totals={totals} />}
           </div>
+        </div>
+      </div>
+
+      {/* Hidden full-size render target for PDF capture — not visible to user */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          top: '-9999px',
+          left: '-9999px',
+          zIndex: -1,
+          pointerEvents: 'none',
+          width: currentTheme === 'receipt' ? '340px' : '800px',
+        }}
+      >
+        <div ref={pdfRef} className="bg-white">
+          {currentTheme === 'standard' && <StandardTheme store={store} totals={totals} />}
+          {currentTheme === 'modern' && <ModernTheme store={store} totals={totals} />}
+          {currentTheme === 'receipt' && <ReceiptTheme store={store} totals={totals} />}
         </div>
       </div>
     </div>
