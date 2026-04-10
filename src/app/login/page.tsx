@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, ArrowLeft, Loader2, Eye, EyeOff, Mail, Lock, AlertTriangle, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
@@ -218,27 +218,19 @@ export default function LoginPage() {
                 </>
               )}
             </Button>
-            
-            <div className="relative py-4">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-surface-700/50" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-surface-950 px-2 text-primary-400 font-bold tracking-widest">No Sign-up Required</span>
-              </div>
-            </div>
-
-            <Link 
-              href="/builder" 
-              className={cn(
-                buttonVariants({ variant: "outline" }), 
-                "w-full h-11 border-surface-700/50 flex items-center justify-center transition-all rounded-lg",
-                agreed ? "text-surface-300 hover:text-white hover:bg-surface-800/50" : "text-surface-600 pointer-events-none opacity-50"
-              )}>
-              Start Building Now
-            </Link>
           </CardContent>
-          <div className="p-6 bg-surface-900/50 border-t border-surface-700/50 text-center space-y-3">
+          <CardFooter className="flex flex-col gap-4 border-t border-surface-800 pt-6">
+            <Button 
+                variant="ghost" 
+                asChild
+                className="w-full text-surface-400 hover:text-white transition-colors"
+            >
+                <Link href="/builder" className="flex items-center gap-2">
+                    <ArrowLeft className="w-4 h-4" />
+                    Cancel & Return to Builder
+                </Link>
+            </Button>
+            <div className="text-center space-y-3">
              <div className="flex flex-wrap justify-center gap-2">
                 <span className="px-2 py-1 bg-surface-800 rounded text-[10px] text-surface-400 font-medium">BIR RR 7-2024</span>
                 <span className="px-2 py-1 bg-surface-800 rounded text-[10px] text-surface-400 font-medium">Shopee/Lazada Ready</span>
