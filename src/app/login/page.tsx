@@ -220,16 +220,16 @@ export default function LoginPage() {
             </Button>
           </CardContent>
           <CardFooter className="flex flex-col gap-4 border-t border-surface-800 pt-6">
-            <Button 
-                variant="ghost" 
-                asChild
-                className="w-full text-surface-400 hover:text-white transition-colors"
+            <Link 
+                href="/builder" 
+                className={cn(
+                    buttonVariants({ variant: "ghost" }), 
+                    "w-full text-surface-400 hover:text-white transition-colors flex items-center justify-center gap-2"
+                )}
             >
-                <Link href="/builder" className="flex items-center gap-2">
-                    <ArrowLeft className="w-4 h-4" />
-                    Cancel & Return to Builder
-                </Link>
-            </Button>
+                <ArrowLeft className="w-4 h-4" />
+                Cancel & Return to Builder
+            </Link>
             <div className="text-center space-y-3">
              <div className="flex flex-wrap justify-center gap-2">
                 <span className="px-2 py-1 bg-surface-800 rounded text-[10px] text-surface-400 font-medium">BIR RR 7-2024</span>
