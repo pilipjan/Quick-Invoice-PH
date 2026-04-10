@@ -2,20 +2,22 @@ import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
-  // if "next" is in search params, use it as the redirection URL
   const next = searchParams.get('next') ?? '/builder';
+
+  // Determine the correct public origin
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host');
+  const protocol = request.headers.get('x-forwarded-proto') || 'https';
+  const publicOrigin = `${protocol}://${host}`;
 
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      // Use the builder path directly to ensure it stays on the correct domain
-      return NextResponse.redirect(new URL(next, request.url));
+      return NextResponse.redirect(`${publicOrigin}${next}`);
     }
   }
 
-  // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/login?error=auth_failed`);
+  return NextResponse.redirect(`${publicOrigin}/login?error=auth_failed`);
 }
