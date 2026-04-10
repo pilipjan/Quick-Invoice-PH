@@ -191,12 +191,16 @@ export default function InvoiceForm() {
                 Save Default Business Info
              </Button>
            ) : (
-             <Button variant="outline" size="sm" asChild className="text-primary-400 border-primary-500/30 hover:bg-primary-500/10 shadow-[var(--shadow-glow)] animate-pulse transition-all h-9">
-                <Link href="/login">
-                  <RefreshCw className="w-4 h-4 mr-2 animate-spin-slow" />
-                  Keep it Safe (Sync to Cloud)
-                </Link>
-             </Button>
+             <Link 
+               href="/login" 
+               className={cn(
+                 buttonVariants({ variant: "outline", size: "sm" }), 
+                 "text-primary-400 border-primary-500/30 hover:bg-primary-500/10 shadow-[var(--shadow-glow)] animate-pulse transition-all h-9"
+               )}
+             >
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin-slow" />
+                Keep it Safe (Sync to Cloud)
+             </Link>
            )}
         </div>
 
