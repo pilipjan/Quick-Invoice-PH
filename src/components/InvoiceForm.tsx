@@ -185,10 +185,19 @@ export default function InvoiceForm() {
         subtitle="Your registered business footprint"
       >
         <div className="flex justify-end mb-6">
-           <Button variant="outline" size="sm" onClick={handleSaveProfile} className="text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/10 shadow-sm transition-all h-9">
-              <Save className="w-4 h-4 mr-2" />
-              Save Default Business Info
-           </Button>
+           {user ? (
+             <Button variant="outline" size="sm" onClick={handleSaveProfile} className="text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/10 shadow-sm transition-all h-9">
+                <Save className="w-4 h-4 mr-2" />
+                Save Default Business Info
+             </Button>
+           ) : (
+             <Button variant="outline" size="sm" asChild className="text-primary-400 border-primary-500/30 hover:bg-primary-500/10 shadow-[var(--shadow-glow)] animate-pulse transition-all h-9">
+                <Link href="/login">
+                  <RefreshCw className="w-4 h-4 mr-2 animate-spin-slow" />
+                  Keep it Safe (Sync to Cloud)
+                </Link>
+             </Button>
+           )}
         </div>
 
         <div className="flex items-center justify-between py-2 border-b border-surface-700/50">
