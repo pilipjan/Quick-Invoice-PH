@@ -12,8 +12,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { createClient } from '@/lib/supabase/client';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { Trash2, Plus, RefreshCw, ChevronDown, ChevronUp, Save, CheckCircle2 } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, ChevronDown, ChevronUp, Save, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription,
+  DialogFooter
+} from '@/components/ui/dialog';
+import { Checkbox } from '@/components/ui/checkbox';
 
 function CollapsibleSection({ title, subtitle, defaultOpen = false, children }: any) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -45,6 +54,26 @@ function CollapsibleSection({ title, subtitle, defaultOpen = false, children }: 
 export default function InvoiceForm() {
   const store = useInvoiceStore();
   const supabase = createClient();
+
+  const [showLegalModal, setShowLegalModal] = useState(false);
+  const [hasAtpCheck, setHasAtpCheck] = useState(false);
+  const [hasLiabilityCheck, setHasLiabilityCheck] = useState(false);
+
+  const handleToggleOfficial = (checked: boolean) => {
+    if (checked && !store.isRegisteredBir) {
+      setShowLegalModal(true);
+    } else {
+      store.updateField('isRegisteredBir', false);
+    }
+  };
+
+  const confirmOfficialMode = () => {
+    if (hasAtpCheck && hasLiabilityCheck) {
+      store.updateField('isRegisteredBir', true);
+      setShowLegalModal(false);
+      toast.success("Official Receipt Mode Enabled");
+    }
+  };
 
   // 1. Fetch profile on mount/login
   useEffect(() => {
@@ -178,10 +207,74 @@ export default function InvoiceForm() {
           </div>
           <Switch 
             checked={store.isRegisteredBir} 
-            onCheckedChange={(val) => store.updateField('isRegisteredBir', val)}
+            onCheckedChange={handleToggleOfficial}
             className="data-[state=checked]:bg-primary-500"
           />
         </div>
+
+        {/* Legal Confirmation Modal */}
+        <Dialog open={showLegalModal} onOpenChange={setShowLegalModal}>
+          <DialogContent className="glass border-surface-700/50 max-w-md">
+            <DialogHeader className="space-y-3">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-2 mx-auto">
+                <ShieldCheck className="w-6 h-6 text-red-400" />
+              </div>
+              <DialogTitle className="text-2xl font-bold text-center">Legal Declaration Required</DialogTitle>
+              <DialogDescription className="text-surface-400 text-center text-xs leading-relaxed">
+                You are about to remove the **"Pro-forma"** safeguard. This action has serious legal and tax implications under the Philippine Tax Code.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4 py-4">
+              <div className="bg-surface-950/50 border border-surface-800 p-4 rounded-xl space-y-4">
+                <div className="flex items-start space-x-3">
+                  <Checkbox 
+                    id="atp-check" 
+                    checked={hasAtpCheck}
+                    onCheckedChange={(val: any) => setHasAtpCheck(!!val)}
+                    className="mt-1"
+                  />
+                  <Label htmlFor="atp-check" className="text-[11px] leading-tight text-surface-300 font-medium cursor-pointer">
+                    I confirm that I hold a valid **Authority to Print (ATP)** or **CAS Permit** issued by the BIR for my business.
+                  </Label>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Checkbox 
+                    id="liability-check" 
+                    checked={hasLiabilityCheck}
+                    onCheckedChange={(val: any) => setHasLiabilityCheck(!!val)}
+                    className="mt-1"
+                  />
+                  <Label htmlFor="liability-check" className="text-[11px] leading-tight text-surface-300 font-medium cursor-pointer">
+                    I assume **full civil and criminal liability** for all documents issued in this mode as per the National Internal Revenue Code.
+                  </Label>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2 p-3 bg-red-500/5 border border-red-500/10 rounded-lg">
+                <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
+                <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest">Misuse constitutes tax fraud</p>
+              </div>
+            </div>
+
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button 
+                variant="ghost" 
+                onClick={() => setShowLegalModal(false)}
+                className="w-full sm:w-auto"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={confirmOfficialMode}
+                disabled={!hasAtpCheck || !hasLiabilityCheck}
+                className="w-full sm:w-auto gradient-primary text-white font-bold disabled:opacity-50"
+              >
+                Confirm & Enable
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         <div className="space-y-2">
           <Label>Business / Trade Name</Label>
           <Input placeholder="e.g. Juan's Tech Services" value={store.businessName} onChange={(e) => store.updateField('businessName', e.target.value)} />
