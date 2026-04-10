@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QuickInvoice PH - Free Pro-forma Invoice Generator & BIR Compliance Guide",
-  description: "Generate professional pro-forma invoices, receipts, and quotations for free. Built for Philippine businesses with VAT, non-VAT, and SC/PWD discount support.",
-  keywords: ["Philippines Invoice", "PH Receipt Generator", "Free Pro-forma Invoice", "BIR Compliance Philippines", "Sales Invoice Template PH"],
+  title: "QuickInvoice PH - Free EOPT-Compliant Sales Invoice Generator",
+  description: "Generate BIR-compliant Sales Invoices (per RR 7-2024) for free. Optimized for Shopee, Lazada sellers, and Filipino small businesses with no sign-up required.",
+  keywords: ["Sales Invoice Generator Philippines", "RR 7-2024 Compliance", "EOPT Act PH", "Shopee Seller Invoice Maker", "Free Receipt Maker No Signup", "Lazada Invoice Generator"],
   authors: [{ name: "Philip John Santiano" }],
   openGraph: {
-    title: "QuickInvoice PH - Free Invoice Generator",
-    description: "The fastest way to generate bookkeeping-ready invoices in the Philippines.",
+    title: "QuickInvoice PH - Sales Invoice Generator",
+    description: "The fastest way to generate EOPT Act compliant invoices in the Philippines.",
     url: "https://invoice.philipjohnn8nautomation.online",
     siteName: "QuickInvoice PH",
     locale: "en_PH",
@@ -35,6 +35,13 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "UaOSg89_kEa1zlI5_Svx4gbYyM15Z1-tDOidWy5RjKk",
+  },
+  manifest: "/manifest.json",
+  themeColor: "#0f172a",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "QuickInvoice PH",
   },
 };
 
@@ -53,6 +60,17 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <Toaster position="top-right" richColors />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

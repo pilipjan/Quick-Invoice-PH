@@ -15,97 +15,90 @@ export default function CompliancePage() {
           Back
         </Link>
         <div className="flex items-center font-bold text-lg tracking-tight text-white border-l border-surface-700 pl-6 h-8">
-          BIR Compliance Notice
+          EOPT Act & BIR Compliance
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto py-12 px-6 lg:py-20">
         <div className="space-y-8">
-          <section className="space-y-4">
-            <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white to-surface-400 bg-clip-text text-transparent">
-              BIR & EIS Compliance
+          <section className="space-y-4 text-center pb-8 border-b border-surface-800">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white to-surface-400 bg-clip-text text-transparent">
+              BIR Sales Invoice Guide (2024)
             </h1>
-            <p className="text-surface-400 text-lg">
-              Understanding your duties as a Philippine taxpayer.
+            <p className="text-surface-400 text-lg max-w-2xl mx-auto">
+              Everything you need to know about the **Ease of Paying Taxes (EOPT) Act** and how it affects your billing.
             </p>
+          </section>
+
+          <section className="p-8 bg-primary-600/5 border border-primary-500/20 rounded-3xl space-y-4">
+             <div className="flex items-center gap-3 text-primary-400">
+                <Landmark className="w-6 h-6" />
+                <h2 className="text-2xl font-bold">The Shift: Official Receipt → Sales Invoice</h2>
+             </div>
+             <p className="text-surface-300 leading-relaxed">
+               Under **Revenue Regulation (RR) No. 7-2024**, the BIR has mandated the use of **Sales Invoices** for both goods and services. The traditional "Official Receipt" is now only a supplementary document. 
+             </p>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                <div className="bg-surface-900 p-4 rounded-xl border border-surface-800">
+                   <h4 className="font-bold mb-2">Before EOPT</h4>
+                   <p className="text-xs text-surface-500">Official Receipts for services, Sales Invoices for goods.</p>
+                </div>
+                <div className="bg-primary-500/10 p-4 rounded-xl border border-primary-500/20">
+                   <h4 className="font-bold mb-2 text-primary-400">After EOPT (Current)</h4>
+                   <p className="text-xs text-primary-300/80">**Sales Invoice** is the primary document for ALL transactions.</p>
+                </div>
+             </div>
           </section>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
              <div className="p-6 bg-surface-900 border border-surface-800 rounded-3xl space-y-3">
-                <Landmark className="w-8 h-8 text-primary-400" />
-                <h3 className="text-xl font-bold">What is EIS?</h3>
+                <Info className="w-8 h-8 text-blue-400" />
+                <h3 className="text-xl font-bold">What is RR 11-2024?</h3>
                 <p className="text-sm text-surface-400 leading-relaxed">
-                  The **Electronic Invoicing System (EIS)** is the BIR's mandate for certain taxpayers (e.g., e-commerce, large taxpayers) to issue and report sales data electronically in near real-time.
+                  This regulation provides the transition rules. Businesses are allowed to use their remaining "Official Receipt" booklets by striking out the term and stamping **"Sales Invoice"** until fully consumed.
                 </p>
              </div>
              <div className="p-6 bg-surface-900 border border-surface-800 rounded-3xl space-y-3">
-                <Info className="w-8 h-8 text-blue-400" />
-                <h3 className="text-xl font-bold">Authority to Print (ATP)</h3>
+                <HelpCircle className="w-8 h-8 text-emerald-400" />
+                <h3 className="text-xl font-bold">E-Commerce Sellers</h3>
                 <p className="text-sm text-surface-400 leading-relaxed">
-                  Every business must have a valid **Authority to Print** for manual receipts or a **CAS (Computerized Accounting System)** permit for digital ones. 
+                  **Shopee and Lazada sellers** are strictly required to issue Sales Invoices. QuickInvoice PH helps you generate pro-forma versions to track your sales before encoding them into your official BIR-registered system.
                 </p>
              </div>
           </div>
 
-          <div className="space-y-12 pt-8">
-            <section className="space-y-6">
-              <div className="flex items-center gap-3 text-emerald-400">
-                <HelpCircle className="w-6 h-6" />
-                <h2 className="text-2xl font-bold">Is QuickInvoice PH BIR-Compliant?</h2>
-              </div>
-              <p className="text-surface-300 leading-relaxed">
-                QuickInvoice PH is a **technical framework** for generating professional layout invoices. It is **not** a pre-registered CAS software.
-              </p>
-              
-              <div className="bg-surface-900/50 border border-surface-800 p-8 rounded-3xl space-y-6">
-                 <h4 className="font-bold text-white flex items-center gap-2">
-                   <CheckCircle className="w-4 h-4 text-emerald-500" />
-                   Approved Use Cases:
-                 </h4>
-                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <li className="flex gap-3 text-sm text-surface-400">
-                       <span className="w-1.5 h-1.5 rounded-full bg-surface-700 mt-2 shrink-0" />
-                       Issuing pro-forma invoices for service quotations.
-                    </li>
-                    <li className="flex gap-3 text-sm text-surface-400">
-                       <span className="w-1.5 h-1.5 rounded-full bg-surface-700 mt-2 shrink-0" />
-                       Internal expense reimbursement tracking for employees.
-                    </li>
-                    <li className="flex gap-3 text-sm text-surface-400">
-                       <span className="w-1.5 h-1.5 rounded-full bg-surface-700 mt-2 shrink-0" />
-                       Freelancers documenting non-VAT sales for record-keeping.
-                    </li>
-                    <li className="flex gap-3 text-sm text-surface-400">
-                       <span className="w-1.5 h-1.5 rounded-full bg-surface-700 mt-2 shrink-0" />
-                       Personal side-project earnings documentation.
-                    </li>
-                 </ul>
-              </div>
-            </section>
+          <section className="space-y-6 pt-8">
+            <h2 className="text-2xl font-bold flex items-center gap-3">
+               <Scale className="w-6 h-6 text-primary-400" />
+               Is this tool BIR-Approved?
+            </h2>
+            <div className="space-y-4 text-surface-300 leading-relaxed">
+               <p>
+                 QuickInvoice PH is a **technical layout tool**. It is **not** a POS system or a pre-registered Computerized Accounting System (CAS).
+               </p>
+               <ul className="space-y-3">
+                  <li className="flex gap-3 items-start">
+                     <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                     <span>**PRO-FORMA ONLY**: Use this for billing statements, service quotes, and internal record keeping.</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                     <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                     <span>**LEGAL COMPLIANCE**: All generated documents automatically carry the mandatory "Pro-forma" watermark to prevent fraudulent use as tax receipts.</span>
+                  </li>
+               </ul>
+            </div>
+          </section>
 
-            <section className="space-y-4">
-              <div className="flex items-center gap-3 text-primary-400">
-                <Scale className="w-6 h-6" />
-                <h2 className="text-2xl font-bold">Mandatory BIR Disclaimers</h2>
-              </div>
-              <p className="text-surface-300 leading-relaxed">
-                By BIR regulation (RR No. 10-2015), any computerized software producing invoices must display a specific disclaimer if it is not a registered CAS. Our system automatically appends this to the bottom of all PDFs:
-              </p>
-              <div className="p-4 bg-surface-950 font-mono text-[10px] text-surface-500 text-center uppercase tracking-tighter border border-surface-800 rounded">
-                "Disclaimer: System generated. Not a substitute for BIR-authorized receipts without valid ATP/CAS. Issuer assumes all liability."
-              </div>
-            </section>
-          </div>
-
-          <div className="pt-12 border-t border-surface-800 flex justify-between items-center">
-            <p className="text-sm text-surface-500">
-              Reference: BIR Revenue Memorandum Order No. 24-2023
-            </p>
+          <div className="pt-12 border-t border-surface-800 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-sm text-surface-500 space-y-1">
+              <p>Reference: BIR Revenue Regulation No. 7-2024 & 11-2024</p>
+              <p>Ease of Paying Taxes (EOPT) Act - Republic Act No. 11976</p>
+            </div>
             <Link 
                href="/builder" 
-               className={cn(buttonVariants({ variant: "default" }), "gradient-primary text-white font-semibold px-6")}
+               className={cn(buttonVariants({ variant: "default" }), "gradient-primary text-white font-semibold px-8 h-12")}
             >
-              I Understand, Let's Build
+              Start Generating Sales Invoices
             </Link>
           </div>
         </div>

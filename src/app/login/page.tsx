@@ -101,9 +101,9 @@ export default function LoginPage() {
         <Card className="glass border-surface-700/50 shadow-2xl overflow-hidden">
           <CardHeader className="text-center space-y-2 pb-8 flex flex-col items-center">
             <div className="w-16 h-1 bg-gradient-primary rounded-full mb-4" />
-            <CardTitle className="text-2xl text-white">Welcome Back</CardTitle>
+            <CardTitle className="text-2xl text-white">Sales Invoice Generator</CardTitle>
             <CardDescription className="text-surface-400">
-              Sign in to save your business details and access your invoice history.
+              **EOPT Act (RR 7-2024)** compliant. Generate pro-forma sales invoices and billing statements instantly. No sign-up required.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -231,7 +231,7 @@ export default function LoginPage() {
                 <span className="w-full border-t border-surface-700/50" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-surface-950 px-2 text-surface-500 font-medium">Or continue as guest</span>
+                <span className="bg-surface-950 px-2 text-primary-400 font-bold tracking-widest">No Sign-up Required</span>
               </div>
             </div>
 
@@ -245,9 +245,14 @@ export default function LoginPage() {
               Start Building Now
             </Link>
           </CardContent>
-          <div className="p-6 bg-surface-900/50 border-t border-surface-700/50 text-center">
-             <p className="text-xs text-surface-500">
-               By signing in, you agree to our <Link href="/terms" className="text-surface-400 underline hover:text-primary-400">Terms of Use</Link> and <Link href="/privacy" className="text-surface-400 underline hover:text-primary-400">Privacy Policy</Link>.
+          <div className="p-6 bg-surface-900/50 border-t border-surface-700/50 text-center space-y-3">
+             <div className="flex flex-wrap justify-center gap-2">
+                <span className="px-2 py-1 bg-surface-800 rounded text-[10px] text-surface-400 font-medium">BIR RR 7-2024</span>
+                <span className="px-2 py-1 bg-surface-800 rounded text-[10px] text-surface-400 font-medium">Shopee/Lazada Ready</span>
+                <span className="px-2 py-1 bg-surface-800 rounded text-[10px] text-surface-400 font-medium">EOPT Compliant</span>
+             </div>
+             <p className="text-[10px] text-surface-500">
+               By using this tool, you agree to our <Link href="/terms" className="text-surface-400 underline hover:text-primary-400">Terms</Link> and <Link href="/compliance" className="text-surface-400 underline hover:text-primary-400">BIR Disclosure</Link>.
              </p>
           </div>
         </Card>

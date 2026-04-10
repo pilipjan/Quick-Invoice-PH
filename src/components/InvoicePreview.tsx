@@ -143,7 +143,7 @@ const ModernTheme = ({ store, totals }: { store: any; totals: any }) => (
     <div className="bg-blue-600 text-white p-10 flex justify-between items-center rounded-b-3xl shadow-md">
       <div className="flex flex-col items-start">
         {store.logoUrl && <img src={store.logoUrl} alt="Logo" className="h-14 w-auto object-contain mb-4 rounded bg-white/10 p-1" />}
-        <h1 className="text-5xl font-black tracking-tighter">INVOICE</h1>
+        <h1 className="text-5xl font-black tracking-tighter">SALES INVOICE</h1>
         <p className="opacity-80 font-medium mt-1">Invoice No: {store.invoiceNumber || "000000"}</p>
         <p className="opacity-80">Date: {store.invoiceDate || "YYYY-MM-DD"}</p>
       </div>

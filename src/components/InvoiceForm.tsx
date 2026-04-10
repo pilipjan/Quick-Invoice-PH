@@ -206,7 +206,7 @@ export default function InvoiceForm() {
       <CollapsibleSection title="Client & Invoice" subtitle="Who are you billing?">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2 relative">
-            <Label>Invoice Number</Label>
+            <Label>Sales Invoice Number</Label>
             <div className="flex gap-2">
               <Input value={store.invoiceNumber} onChange={(e) => store.updateField('invoiceNumber', e.target.value)} />
               <Button variant="outline" size="icon" onClick={store.generateRandomInvoiceNumber} title="Generat Random">
@@ -269,7 +269,7 @@ export default function InvoiceForm() {
       <CollapsibleSection title="Advanced Settings & Features" subtitle="Theme, Payments, Multi-Currency, Signatures">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Invoice Theme</Label>
+            <Label>Sales Invoice Theme</Label>
             <Select value={store.theme || "standard"} onValueChange={(val) => { if (val) store.updateField('theme', val) }}>
               <SelectTrigger>
                 <SelectValue placeholder="Select template theme" />
