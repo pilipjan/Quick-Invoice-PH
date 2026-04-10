@@ -68,7 +68,7 @@ export default function InvoiceForm() {
         const fields: (keyof typeof data)[] = [
           'business_name', 'tin', 'address', 'ptu_number', 
           'is_vat_registered', 'logo_url', 'signature_url',
-          'currency', 'payment_details', 'notes'
+          'currency', 'payment_details', 'notes', 'is_registered_bir'
         ];
         
         fields.forEach(field => {
@@ -105,6 +105,7 @@ export default function InvoiceForm() {
       currency: store.currency,
       payment_details: store.paymentDetails || "",
       notes: store.notes || "",
+      is_registered_bir: store.isRegisteredBir,
       updated_at: new Date().toISOString(),
     };
 
@@ -163,6 +164,23 @@ export default function InvoiceForm() {
             <p className="text-sm text-surface-400">Is your business VAT registered?</p>
           </div>
           <Switch checked={store.isVatRegistered} onCheckedChange={(val) => store.updateField('isVatRegistered', val)} />
+        </div>
+
+        <div className="flex items-center justify-between py-4 px-4 bg-primary-600/10 border border-primary-500/20 rounded-xl my-4 group">
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2">
+              <Label className="text-base font-bold text-primary-400 font-sans">Official Receipt Mode</Label>
+              <CheckCircle2 className="w-4 h-4 text-primary-400" />
+            </div>
+            <p className="text-xs text-surface-400 max-w-xs">
+              Enable this only if you are **BIR-registered** with a valid ATP/CAS. This removes the "Pro-forma" watermark.
+            </p>
+          </div>
+          <Switch 
+            checked={store.isRegisteredBir} 
+            onCheckedChange={(val) => store.updateField('isRegisteredBir', val)}
+            className="data-[state=checked]:bg-primary-500"
+          />
         </div>
         <div className="space-y-2">
           <Label>Business / Trade Name</Label>

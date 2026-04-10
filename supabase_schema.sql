@@ -11,6 +11,7 @@ CREATE TABLE profiles (
   currency TEXT DEFAULT 'PHP',
   payment_details TEXT,
   notes TEXT,
+  is_registered_bir BOOLEAN DEFAULT FALSE,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -18,6 +18,7 @@ export interface InvoiceState {
   ptuNumber: string;
   isVatRegistered: boolean;
   logoUrl: string | null;
+  isRegisteredBir: boolean;
   
   // Client & Invoice Info
   clientName: string;
@@ -58,6 +59,7 @@ const initialState = {
   isVatRegistered: true,
   logoUrl: null,
   signatureUrl: null,
+  isRegisteredBir: false,
   
   clientName: '',
   clientAddress: '',

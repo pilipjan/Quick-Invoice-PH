@@ -3,10 +3,11 @@
 import { createClient } from "@/lib/supabase/client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, ArrowLeft, Loader2, Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { FileText, ArrowLeft, Loader2, Eye, EyeOff, Mail, Lock, AlertTriangle, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +106,18 @@ export default function LoginPage() {
               Sign in to save your business details and access your invoice history.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
+            {/* Ethical Warning Box */}
+            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex gap-3 items-start animate-pulse mb-2">
+              <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <h4 className="text-xs font-bold text-red-400 uppercase tracking-widest">Fraud Prevention Notice</h4>
+                <p className="text-[10px] text-red-200/70 leading-relaxed">
+                  Misuse of this tool for tax evasion or insurance fraud is a criminal offense under the PH National Internal Revenue Code.
+                </p>
+              </div>
+            </div>
+
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
@@ -146,11 +159,28 @@ export default function LoginPage() {
 
               <Button 
                 type="submit"
-                disabled={isLoading}
-                className="w-full gradient-primary text-white font-semibold"
+                disabled={isLoading || !agreed}
+                className={cn(
+                  "w-full font-semibold transition-all",
+                  agreed ? "gradient-primary text-white" : "bg-surface-800 text-surface-500 cursor-not-allowed"
+                )}
               >
                 {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : (isSignUp ? "Create Account" : "Sign In")}
               </Button>
+
+              <div className="flex items-start space-x-2 pt-2">
+                <Checkbox 
+                  id="terms" 
+                  checked={agreed} 
+                  onCheckedChange={(checked: any) => setAgreed(checked as boolean)} 
+                />
+                <Label 
+                  htmlFor="terms" 
+                  className="text-[11px] leading-tight text-surface-400 font-medium cursor-pointer"
+                >
+                  I acknowledge that these documents are **Pro-forma Only** and I agree to the <Link href="/terms" className="text-primary-400 hover:underline">Terms of Use</Link> and <Link href="/compliance" className="text-primary-400 hover:underline">BIR Compliance</Link>.
+                </Label>
+              </div>
             </form>
 
             <div className="text-center">
@@ -174,9 +204,12 @@ export default function LoginPage() {
             <Button 
               type="button"
               variant="outline"
-              className="w-full h-11 bg-white hover:bg-slate-100 text-slate-900 font-semibold flex items-center justify-center gap-3 transition-all active:scale-95"
+              className={cn(
+                "w-full h-11 font-semibold flex items-center justify-center gap-3 transition-all active:scale-95",
+                agreed ? "bg-white hover:bg-slate-100 text-slate-900" : "bg-surface-800/50 text-surface-600 border-surface-800 pointer-events-none"
+              )}
               onClick={handleGoogleLogin}
-              disabled={isLoading}
+              disabled={isLoading || !agreed}
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -204,7 +237,11 @@ export default function LoginPage() {
 
             <Link 
               href="/builder" 
-              className={cn(buttonVariants({ variant: "outline" }), "w-full h-11 border-surface-700/50 text-surface-300 hover:text-white hover:bg-surface-800/50 flex items-center justify-center transition-all rounded-lg")}>
+              className={cn(
+                buttonVariants({ variant: "outline" }), 
+                "w-full h-11 border-surface-700/50 flex items-center justify-center transition-all rounded-lg",
+                agreed ? "text-surface-300 hover:text-white hover:bg-surface-800/50" : "text-surface-600 pointer-events-none opacity-50"
+              )}>
               Start Building Now
             </Link>
           </CardContent>

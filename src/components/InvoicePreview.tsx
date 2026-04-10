@@ -10,9 +10,19 @@ import { toast } from 'sonner';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
+// --- COMPLIANCE WATERMARK ---
+const Watermark = () => (
+  <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
+    <div className="text-[120px] font-black text-slate-100/40 -rotate-[35deg] whitespace-nowrap select-none tracking-tighter uppercase">
+      Pro-forma
+    </div>
+  </div>
+);
+
 // --- STANDARD A4 THEME ---
 const StandardTheme = ({ store, totals }: { store: any; totals: any }) => (
-  <div className="bg-white p-10 w-[800px] min-h-[1056px] flex flex-col font-sans tracking-normal text-black mx-auto">
+  <div className="bg-white p-10 w-[800px] min-h-[1056px] flex flex-col font-sans tracking-normal text-black mx-auto relative">
+    {!store.isRegisteredBir && <Watermark />}
     <div className="flex justify-between items-start mb-8 pb-6 border-b-2 border-slate-200">
       <div className="flex flex-col">
         {store.logoUrl && <img src={store.logoUrl} alt="Logo" className="h-16 w-auto object-contain mb-4" />}
@@ -118,14 +128,17 @@ const StandardTheme = ({ store, totals }: { store: any; totals: any }) => (
       </div>
     </div>
     <div className="mt-8 pt-4 border-t border-slate-200 text-[10px] text-slate-400 text-center uppercase tracking-widest max-w-2xl mx-auto">
-      Disclaimer: Generated via QuickInvoice PH software. This document does not constitute a valid BIR-approved official invoice unless issued by a registered entity holding a valid Authority to Print (ATP) or Computerized Accounting System (CAS) permit. The individual or business issuing this document assumes all legal liabilities under the National Internal Revenue Code.
+      {store.isRegisteredBir 
+        ? "This document is an electronically generated official invoice issued by a registered entity. Subject to Philippine Revenue Regulations."
+        : "Disclaimer: Generated via QuickInvoice PH software. This document does not constitute a valid BIR-approved official invoice unless issued by a registered entity holding a valid Authority to Print (ATP) or Computerized Accounting System (CAS) permit. The individual or business issuing this document assumes all legal liabilities under the National Internal Revenue Code."}
     </div>
   </div>
 );
 
 // --- MODERN A4 THEME ---
 const ModernTheme = ({ store, totals }: { store: any; totals: any }) => (
-  <div className="bg-slate-50 pb-10 w-[800px] min-h-[1056px] flex flex-col font-sans tracking-normal text-black mx-auto overflow-hidden">
+  <div className="bg-slate-50 pb-10 w-[800px] min-h-[1056px] flex flex-col font-sans tracking-normal text-black mx-auto overflow-hidden relative">
+    {!store.isRegisteredBir && <Watermark />}
     {/* Colored Header Block */}
     <div className="bg-blue-600 text-white p-10 flex justify-between items-center rounded-b-3xl shadow-md">
       <div className="flex flex-col items-start">
@@ -250,7 +263,14 @@ const ModernTheme = ({ store, totals }: { store: any; totals: any }) => (
 // --- THERMAL POS RECEIPT THEME ---
 const ReceiptTheme = ({ store, totals }: { store: any; totals: any }) => (
   // Fixed width approx 80mm equivalent (300px roughly), height dynamic
-  <div className="bg-white p-6 w-[340px] font-mono text-black mx-auto text-xs pb-12 shadow-[0_0_15px_rgba(0,0,0,0.1)]">
+  <div className="bg-white p-6 w-[340px] font-mono text-black mx-auto text-xs pb-12 shadow-[0_0_15px_rgba(0,0,0,0.1)] relative overflow-hidden">
+    {!store.isRegisteredBir && (
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <div className="text-[40px] font-black text-slate-200/40 -rotate-[45deg] whitespace-nowrap select-none uppercase">
+          PRO-FORMA
+        </div>
+      </div>
+    )}
     <div className="text-center mb-4 flex flex-col items-center space-y-1">
       {store.logoUrl && <img src={store.logoUrl} alt="Logo" className="h-12 w-auto object-contain mb-2 grayscale" />}
       <h2 className="font-bold text-base uppercase">{store.businessName || "STORE NAME"}</h2>
