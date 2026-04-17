@@ -4,8 +4,21 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FileText, ArrowRight, Check, Zap, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return (
+    <div className="flex flex-col min-h-[100dvh] bg-surface-950 font-sans items-center justify-center">
+        <div className="animate-pulse text-surface-400">Loading QuickInvoice Engine...</div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col min-h-[100dvh] bg-surface-950 font-sans">
 

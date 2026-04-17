@@ -37,7 +37,7 @@ export default function InvoiceBuilder({ initialUser }: { initialUser?: User | n
     if (!hasAgreed) {
       setShowCompliance(true);
     }
-  }, [supabase]);
+  }, [initialUser]); // removed supabase from dependency array since it is now stable and external
 
   const handleAgreeCompliance = () => {
     sessionStorage.setItem('quickinvoice_compliance_agreed', 'true');

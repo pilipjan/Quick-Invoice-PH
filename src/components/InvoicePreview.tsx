@@ -367,7 +367,7 @@ export default function InvoicePreview() {
       setUser(user);
     };
     checkUser();
-  }, [supabase]);
+  }, []); // supabase is a stable singleton, no need in deps
 
   if (!store) return null;
 
@@ -469,7 +469,7 @@ export default function InvoicePreview() {
   return (
     <div className="space-y-4 sticky top-6">
       {/* Global Print Styles */}
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           body * { visibility: hidden; }
           #invoice-capture-area, #invoice-capture-area * { visibility: visible; }
@@ -486,7 +486,7 @@ export default function InvoicePreview() {
           }
           @page { size: auto; margin: 0; }
         }
-      `}</style>
+      ` }} />
       <div className="flex justify-between items-center">
         <div className="space-y-1">
           <h2 className="text-xl font-bold">Live Preview</h2>

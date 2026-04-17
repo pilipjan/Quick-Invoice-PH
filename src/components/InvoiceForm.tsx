@@ -116,7 +116,7 @@ export default function InvoiceForm() {
     };
 
     fetchProfile();
-  }, [supabase]);
+  }, []); // remove supabase dependency since it is global/stable
 
   // 2. Save profile handler
   const handleSaveProfile = async () => {
