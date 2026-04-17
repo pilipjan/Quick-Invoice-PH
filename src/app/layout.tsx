@@ -48,6 +48,7 @@ export const metadata: Metadata = {
 import { Toaster } from "@/components/ui/sonner";
 
 import Header from "@/components/Header";
+import SiteFooter from "@/components/SiteFooter";
 
 export default function RootLayout({
   children,
@@ -62,6 +63,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Header />
         {children}
+        <SiteFooter />
         <Toaster position="top-right" richColors />
         <script
           dangerouslySetInnerHTML={{
